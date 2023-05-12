@@ -1,0 +1,66 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    ListNode newLinkedList = new ListNode();
+    ListNode tempNode = null;
+    int carryForwardValue = 0;
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        int sum = 0;
+        while (l1 != null || l2 != null) {
+            sum = 0;
+            if (l1 != null) {
+                sum += l1.val;
+                l1 = l1.next;
+            }
+            if (l2 != null) {
+                sum += l2.val;
+                l2 = l2.next;
+            }
+            if ((sum >= 10)) {
+                int temp = (sum + carryForwardValue);
+                carryForwardValue = (temp)/10;
+                int rem = (temp)%10;
+                ListNode node1 = new ListNode(rem);
+                insertNodeIntoLinkedList(node1);
+            } else {
+                if (carryForwardValue > 0) {
+                    int temp1 = (sum + carryForwardValue);
+                    carryForwardValue = (temp1)/10;
+                    int rem = (temp1)%10;
+                    ListNode node1 = new ListNode(rem);
+                    insertNodeIntoLinkedList(node1);
+                } else {
+                    ListNode node1 = new ListNode(sum);
+                    insertNodeIntoLinkedList(node1);
+                }
+            }
+        }
+        checkIfCarryForwardValueHas(carryForwardValue);
+        return newLinkedList;
+    }
+
+    private void insertNodeIntoLinkedList(ListNode node) {
+        if (tempNode == null) {
+            tempNode = node;
+            newLinkedList = node;
+        } else {
+            tempNode.next = node;
+            tempNode = node;
+        }
+    }
+
+    private void checkIfCarryForwardValueHas(int carryForwardValue) {
+        if (carryForwardValue > 0 && carryForwardValue < 10) {
+            ListNode node1 = new ListNode(carryForwardValue);
+            insertNodeIntoLinkedList(node1);
+        }
+    }
+}
